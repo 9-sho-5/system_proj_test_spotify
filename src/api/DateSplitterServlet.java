@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/api/execute")
 public class DateSplitterServlet extends HttpServlet {
 
-	private static final long serialVersionUID = 1L;
+	// private static final long serialVersionUID = 1L;
 
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
@@ -36,7 +36,6 @@ public class DateSplitterServlet extends HttpServlet {
 		Writer writer = response.getWriter();
 		writer.append(json);
 		writer.flush();
-
     }
 
 }
