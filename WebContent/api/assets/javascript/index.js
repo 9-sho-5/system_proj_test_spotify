@@ -37,6 +37,8 @@ function receive() {
 }
 
 window.addEventListener("load", function() {
-    var getButtonElement = document.querySelector("button");
-    getButtonElement.addEventListener("click", sendWithGetMethod, false);   
+	if(document.querySelector("#login")){
+		var getButtonElement = document.querySelector("#login");
+		getButtonElement.addEventListener("click", sendWithGetMethod, false);   
+	}
 });
