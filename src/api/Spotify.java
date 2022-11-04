@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.codec.net.QCodec;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.mashape.unirest.http.JsonNode;
@@ -72,7 +73,7 @@ public class Spotify {
 			JSONObject json = new JSONObject(response.body());
 			access_token = json.getString("access_token");
 
-			System.out.println("access_token: " + json.getString("access_token"));
+			// System.out.println("access_token: " + json.getString("access_token"));
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -81,7 +82,7 @@ public class Spotify {
 	public String serch(String keyword) throws UnsupportedEncodingException {
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(apiEndpoint + String.format("/search?q=%s&type=%s", keyword, URLEncoder.encode("track,artist", "utf-8"))))
+            .uri(URI.create(apiEndpoint + String.format("/search?q=%s&type=%s&limit=2", keyword, URLEncoder.encode("track", "utf-8"))))
 			.setHeader("Authorization", "Bearer " + getAccessToken())
 			.setHeader("Content-Type", "application/json")
 			.GET()
@@ -91,13 +92,20 @@ public class Spotify {
 			var response = client.send(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
 			// レスポンスボディからaccess_tokenの取得
 			JSONObject json = new JSONObject(response.body());
-			// access_token = json.getString("access_token");
 
-			System.out.println(json);
+			JSONArray data = json.getJSONObject("tracks").getJSONArray("items");
+			// レスポンス整形
+			for(int i = 0; i < data.length(); i++){
+				System.out.println("Album Images :" + data.getJSONObject(i).getJSONObject("album").getJSONArray("images"));
+				System.out.println("Album Id :" + data.getJSONObject(i).getJSONObject("album").get("id"));
+				System.out.println("Artist :" + data.getJSONObject(i).getJSONArray("artists"));
+				System.out.println("Name :" + data.getJSONObject(i).get("name"));
+			}
+
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
-		return String.format("%s/serch?q=%s&type=%s&code=%s", apiEndpoint, keyword, URLEncoder.encode("artistr,track", "utf-8"), access_token);
+		return "OK";
 	}
 
 	public void setCode (String code) {
