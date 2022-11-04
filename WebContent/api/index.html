@@ -15,15 +15,21 @@
 			let btn_element = document.createElement("p");
 			btn_element.textContent = "ログインしました";
 			let serch_form = document.createElement("form");
-			serch_form.setAttribute("action", "/serch");
+			serch_form.setAttribute("action", "/isp2/api/search");
 			serch_form.setAttribute("method", "get");
 			let input_element = document.createElement("input");
 			let submit_element = document.createElement("input");
+			let hide_element = document.createElement("input");
 			input_element.setAttribute("name", "keyword");
 			submit_element.setAttribute("type", "submit");
 			submit_element.setAttribute("value", "検索");
+			hide_element.setAttribute("type", "hidden");
+			hide_element.setAttribute("name", "code");
+			let code = token[1].split("code=")
+			hide_element.setAttribute("value", code[1].split("&state=")[0]);
 			serch_form.appendChild(input_element);
 			serch_form.appendChild(submit_element);
+			serch_form.appendChild(hide_element);
 			body.appendChild(btn_element);
 			body.appendChild(serch_form);
 		}else{

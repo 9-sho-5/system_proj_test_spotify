@@ -1,8 +1,24 @@
 var xmlHttpRequest;
 let res_uri;
 
-function sendWithGetMethod() {	
+function login() {	
 	var url = "login";
+	xmlHttpRequest = new XMLHttpRequest();
+	xmlHttpRequest.withCredentials = true;
+	xmlHttpRequest.onreadystatechange = receiveFromLogin;
+	xmlHttpRequest.open("get", url, true);
+	xmlHttpRequest.send(null);
+
+	// window.location.href = "/isp2/api/";
+	// xmlHttpRequest = new XMLHttpRequest();
+	// xmlHttpRequest.withCredentials = true;
+	// xmlHttpRequest.onreadystatechange = receive;
+	// xmlHttpRequest.open("get", url, true);
+	// xmlHttpRequest.send(null);
+}
+
+function serch() {
+	var url = "search"
 	xmlHttpRequest = new XMLHttpRequest();
 	xmlHttpRequest.withCredentials = true;
 	xmlHttpRequest.onreadystatechange = receive;
@@ -27,18 +43,23 @@ function redirect_to_api_auth() {
 	// console.log(xhr.getResponseHeader("Access-Control-Allow-Methods"))
 }
 
-function receive() {
+function receiveFromLogin() {
 	if(xmlHttpRequest.readyState == 4 && xmlHttpRequest.status == 200) {
 		var response = JSON.parse(xmlHttpRequest.responseText);
 		res_uri = response.uri;
-		console.log(res_uri)
 		redirect_to_api_auth();
+	}
+}
+
+function receive() {
+	if(xmlHttpRequest.readyState == 4 && xmlHttpRequest.status == 200) {
+		var response = JSON.parse(xmlHttpRequest.responseText);
 	}
 }
 
 window.addEventListener("load", function() {
 	if(document.querySelector("#login")){
 		var getButtonElement = document.querySelector("#login");
-		getButtonElement.addEventListener("click", sendWithGetMethod, false);   
+		getButtonElement.addEventListener("click", login, false);   
 	}
 });

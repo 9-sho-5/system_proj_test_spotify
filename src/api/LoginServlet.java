@@ -1,20 +1,12 @@
 package api;
 
 import java.io.Writer;
-import java.util.Enumeration;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.RequestDispatcher;
 /**
  * Spotify Login Servlet
  */
@@ -23,8 +15,7 @@ public class LoginServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
 		String auhorizeUri = null;
 
@@ -43,7 +34,6 @@ public class LoginServlet extends HttpServlet {
 		builder.append("\"uri\":\"").append(auhorizeUri).append("\"");
 		builder.append('}');
 		String json = builder.toString();
-		System.out.println(json);
 
 		Writer writer = response.getWriter();
 		writer.append(json);

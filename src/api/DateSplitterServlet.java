@@ -2,7 +2,6 @@ package api;
 
 import java.io.Writer;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,7 +30,7 @@ public class DateSplitterServlet extends HttpServlet {
 		builder.append("\"day\":\"").append(dateSplitter.getDay()).append("\"");
 		builder.append('}');
 		String json = builder.toString();
-		System.out.println(json);
+		// System.out.println(json);
 		response.setContentType("application/json");
 		Writer writer = response.getWriter();
 		writer.append(json);
