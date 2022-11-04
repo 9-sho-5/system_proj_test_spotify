@@ -79,6 +79,24 @@ public class Spotify {
 	}
 
 	public String serch(String keyword) throws UnsupportedEncodingException {
+		HttpClient client = HttpClient.newHttpClient();
+		HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(apiEndpoint + String.format("/search?q=%s&type=%s", keyword, URLEncoder.encode("track,artist", "utf-8"))))
+			.setHeader("Authorization", "Bearer " + getAccessToken())
+			.setHeader("Content-Type", "application/json")
+			.GET()
+            .build();
+		try {
+			// リクエストを送信
+			var response = client.send(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+			// レスポンスボディからaccess_tokenの取得
+			JSONObject json = new JSONObject(response.body());
+			// access_token = json.getString("access_token");
+
+			System.out.println(json);
+		} catch (IOException | InterruptedException e) {
+			e.printStackTrace();
+		}
 		return String.format("%s/serch?q=%s&type=%s&code=%s", apiEndpoint, keyword, URLEncoder.encode("artistr,track", "utf-8"), access_token);
 	}
 
