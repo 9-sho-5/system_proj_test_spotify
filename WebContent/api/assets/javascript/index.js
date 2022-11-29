@@ -1,13 +1,13 @@
 var xmlHttpRequest;
 let res_uri;
 
-function login() {	
-	var url = "login";
-	xmlHttpRequest = new XMLHttpRequest();
-	xmlHttpRequest.withCredentials = true;
-	xmlHttpRequest.onreadystatechange = receiveFromLogin;
-	xmlHttpRequest.open("get", url, true);
-	xmlHttpRequest.send(null);
+// function login() {	
+// 	var url = "login";
+// 	xmlHttpRequest = new XMLHttpRequest();
+// 	xmlHttpRequest.withCredentials = true;
+// 	xmlHttpRequest.onreadystatechange = receiveFromLogin;
+// 	xmlHttpRequest.open("get", url, true);
+// 	xmlHttpRequest.send(null);
 
 	// window.location.href = "/isp2/api/";
 	// xmlHttpRequest = new XMLHttpRequest();
@@ -15,13 +15,13 @@ function login() {
 	// xmlHttpRequest.onreadystatechange = receive;
 	// xmlHttpRequest.open("get", url, true);
 	// xmlHttpRequest.send(null);
-}
+// }
 
 function serch() {
 	var url = "search"
 	xmlHttpRequest = new XMLHttpRequest();
 	xmlHttpRequest.withCredentials = true;
-	xmlHttpRequest.onreadystatechange = receive;
+	xmlHttpRequest.onreadystatechange = receiveFromSearch;
 	xmlHttpRequest.open("get", url, true);
 	xmlHttpRequest.send(null);
 }
@@ -51,6 +51,17 @@ function receiveFromLogin() {
 	}
 }
 
+function receiveFromSearch() {
+	if(xmlHttpRequest.readyState == 4 && xmlHttpRequest.status == 200) {
+		var response = JSON.parse(xmlHttpRequest.responseText);
+		if(document.querySelector(".result")){
+			let resultElement = document.querySelector(".result");
+			resultElement.innerHTML = response.data;
+			console.log("OK");
+		}
+	}
+}
+
 function receive() {
 	if(xmlHttpRequest.readyState == 4 && xmlHttpRequest.status == 200) {
 		var response = JSON.parse(xmlHttpRequest.responseText);
@@ -59,7 +70,9 @@ function receive() {
 
 window.addEventListener("load", function() {
 	if(document.querySelector("#login")){
+		console.log("OK")
 		var getButtonElement = document.querySelector("#login");
 		getButtonElement.addEventListener("click", login, false);   
 	}
 });
+

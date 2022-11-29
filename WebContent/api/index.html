@@ -5,45 +5,71 @@
 	<title>Spotify</title>
 	<link rel="stylesheet" type="text/css" href="./assets/css/index.css"/>
 	<link rel="stylesheet" type="text/css" href="./assets/css/reset.css"/>
-	<script type="text/javascript" src="./assets/javascript/index.js"></script>
+	<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+	<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+	<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 <style>
 </style>
 <body>
-	<div class="login_view">
-		<img src="https://storage.googleapis.com/spotifynewsroom-jp.appspot.com/1/2020/12/Spotify_Logo_CMYK_Black.png" alt="spotify" />
-		<script>
-			const href = window.location.href;
-			const token = href.split("api/");
-			let loginElement = document.querySelector(".login_view");
+	<div id="root"></div>
+	<script type="text/babel">
+		function login() {	
+			var url = "login";
+			xmlHttpRequest = new XMLHttpRequest();
+			xmlHttpRequest.withCredentials = true;
+			xmlHttpRequest.onreadystatechange = receiveFromLogin;
+			xmlHttpRequest.open("get", url, true);
+			xmlHttpRequest.send(null);
+		}
+
+		let dom = document.querySelector("#root")
+		var login_flg = false;
+		const href = window.location.href;
+		const token = href.split("api/");
+		const LoggedIn = () => {
+			let code = token[1].split("code=")[1].split("&state=")[0];
+			return (
+				<div>
+					<p>ログインしました</p>
+					<form action="/isp2/api/search" method="get">
+						<input type="text" name="keyword" />
+						<input type="submit" value="検索" />
+						<input type="hidden" name="code" value={ code }/>
+					</form>
+				</div>
+			);
+		}
+					
+		const NotLogin = () => {
+			return (
+				<button id="login" onClick={login}>
+					ログイン
+				</button>
+			)
+		}
+							
+		const App = () => {
+			let loginElement = document.createElement("div.login_view");
+			let imgElement = document.createElement("img");
+			imgElement.setAttribute("src", "https://storage.googleapis.com/spotifynewsroom-jp.appspot.com/1/2020/12/Spotify_Logo_CMYK_Black.png");
+			loginElement.appendChild(imgElement);
 			if(token[1] != "index.html") {
-				let btn_element = document.createElement("p");
-				btn_element.textContent = "ログインしました";
-				let serch_form = document.createElement("form");
-				serch_form.setAttribute("action", "/isp2/api/search");
-				serch_form.setAttribute("method", "get");
-				let input_element = document.createElement("input");
-				let submit_element = document.createElement("input");
-				let hide_element = document.createElement("input");
-				input_element.setAttribute("name", "keyword");
-				submit_element.setAttribute("type", "submit");
-				submit_element.setAttribute("value", "検索");
-				hide_element.setAttribute("type", "hidden");
-				hide_element.setAttribute("name", "code");
-				let code = token[1].split("code=")
-				hide_element.setAttribute("value", code[1].split("&state=")[0]);
-				serch_form.appendChild(input_element);
-				serch_form.appendChild(submit_element);
-				serch_form.appendChild(hide_element);
-				loginElement.appendChild(btn_element);
-				loginElement.appendChild(serch_form);
-			}else{
-				var btn_element = document.createElement("button");
-				btn_element.textContent = "ログイン"
-				btn_element.setAttribute("id", "login")
-				loginElement.appendChild(btn_element);
+				login_flg = true
+			} else {
+				login_flg = false
 			}
-		</script>
-	</div>
+			return(
+				<div className="login_view">
+					<img src="https://storage.googleapis.com/spotifynewsroom-jp.appspot.com/1/2020/12/Spotify_Logo_CMYK_Black.png" alt="spotify" />
+					{
+						login_flg ? <LoggedIn /> : <NotLogin />
+					}
+				</div>
+			);
+		}
+		ReactDOM.render(<App />, dom);
+	</script>
+	<script type="text/javascript" src="./assets/javascript/index.js"></script>
 </body>
 </html>

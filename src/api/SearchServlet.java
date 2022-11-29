@@ -3,6 +3,8 @@ package api;
 import java.io.IOException;
 import java.io.Writer;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,19 +31,17 @@ public class SearchServlet extends HttpServlet  {
         } catch (UnirestException e) {
         }
 
-        String serchUrl = spotify.serch(keyword);
-		
+        String data = spotify.serch(keyword);
 
 		StringBuilder builder = new StringBuilder();
 		builder.append('{');
-		builder.append("\"uri\":\"").append(serchUrl).append("\"");
+		builder.append("\"data\":\"").append(data).append("\"");
 		builder.append('}');
 		String json = builder.toString();
-		// System.out.println(json);
-
+		
+		System.out.println(json);
 		Writer writer = response.getWriter();
 		writer.append(json);
 		writer.flush();
-		
 	}
 }

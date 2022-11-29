@@ -9,8 +9,10 @@ import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.codec.net.QCodec;
@@ -87,6 +89,8 @@ public class Spotify {
 			.setHeader("Content-Type", "application/json")
 			.GET()
             .build();
+
+		StringBuilder builder = null;
 		try {
 			// リクエストを送信
 			var response = client.send(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
@@ -101,11 +105,20 @@ public class Spotify {
 				System.out.println("Artist :" + data.getJSONObject(i).getJSONArray("artists"));
 				System.out.println("Name :" + data.getJSONObject(i).get("name"));
 			}
+			builder = new StringBuilder();
+			builder.append('{');
+			for(int i = 0; i < data.length(); i++){
+				builder.append("\"Album_Images\":\"").append(data.getJSONObject(i).getJSONObject("album").getJSONArray("images")).append("\"");
+				builder.append("\"Album_Id\":\"").append(data.getJSONObject(i).getJSONObject("album").get("id")).append("\"");
+				builder.append("\"Artist\":\"").append(data.getJSONObject(i).getJSONArray("artists")).append("\"");
+				builder.append("\"Name\":\"").append(data.getJSONObject(i).get("name")).append("\"");
+			}
+			builder.append('}');
 
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
-		return "OK";
+		return builder.toString();
 	}
 
 	public void setCode (String code) {
