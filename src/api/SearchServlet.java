@@ -18,11 +18,8 @@ public class SearchServlet extends HttpServlet  {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
         String keyword = (request.getParameter("keyword") == null) ? "" : (String) request.getParameter("keyword");
-        String code = (request.getParameter("code") == null) ? "" : (String) request.getParameter("code");
         
 		Spotify spotify = new Spotify();
-        // token所持の確認
-        spotify.setCode(code);
         try {
             spotify.crateAccessToken();
         } catch (UnirestException e) {
