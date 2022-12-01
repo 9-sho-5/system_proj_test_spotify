@@ -24,18 +24,24 @@
 		}
 
 		let dom = document.querySelector("#root")
-		var login_flg = false;
-		const href = window.location.href;
-		const token = href.split("api/");
+		var cookies = document.cookie; //全てのcookieを取り出して
+		var cookiesArray = cookies.split('; '); // ;で分割し配列に
+		var loginState = null;
+		for(var c of cookiesArray){ //一つ一つ取り出して
+			var cArray = c.split('='); //さらに=で分割して配列に
+			console.log(cArray[0]);
+			if( cArray[0] == 'loginStatus'){ // 取り出したいkeyと合致したら
+				loginState = cArray[1]
+			}
+		}
+		console.log(loginState)
 		const LoggedIn = () => {
-			let code = token[1].split("code=")[1].split("&state=")[0];
 			return (
 				<div>
 					<p>ログインしました</p>
 					<form action="/isp2/api/search" method="get">
 						<input type="text" name="keyword" />
 						<input type="submit" value="検索" />
-						<input type="hidden" name="code" value={ code }/>
 					</form>
 				</div>
 			);
@@ -54,10 +60,10 @@
 			let imgElement = document.createElement("img");
 			imgElement.setAttribute("src", "https://storage.googleapis.com/spotifynewsroom-jp.appspot.com/1/2020/12/Spotify_Logo_CMYK_Black.png");
 			loginElement.appendChild(imgElement);
-			if(token[1] != "index.html") {
-				login_flg = true
-			} else {
-				login_flg = false
+			if(loginState == "loggedIn") {
+				var login_flg = true;
+			} else if (loginState == "notLoginState" || loginState == null) {
+				var login_flg = false;
 			}
 			return(
 				<div className="login_view">
