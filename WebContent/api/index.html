@@ -32,6 +32,15 @@
 			xmlHttpRequest.open("get", url, true);
 			xmlHttpRequest.send(null);
 		}
+		function addTrack(obj) {
+			let trackId = obj.previousElementSibling.value;
+			var url = `add_track?trackId=${ trackId }`
+			xmlHttpRequest = new XMLHttpRequest();
+			xmlHttpRequest.withCredentials = true;
+			// xmlHttpRequest.onreadystatechange = receiveFromSearch;
+			xmlHttpRequest.open("get", url, true);
+			xmlHttpRequest.send(null);
+		}
 		
 		function receiveFromSearch() {
 			if(xmlHttpRequest.readyState == 4 && xmlHttpRequest.status == 200) {
@@ -49,11 +58,16 @@
 						artistNameElement.innerHTML = response.data[i].Artist;
 						let trackIdElement = document.createElement("input");
 						trackIdElement.type = "hidden";
+						let addTrackElement = document.createElement("input");
+						addTrackElement.type = "submit";
+						addTrackElement.value = "add"
+						addTrackElement.setAttribute('onclick', 'addTrack(this)');
 						trackIdElement.value = response.data[i].uri;
 						cardElement.appendChild(imgElement);
 						cardElement.appendChild(truckNameElement);
 						cardElement.appendChild(artistNameElement);
 						cardElement.appendChild(trackIdElement);
+						cardElement.appendChild(addTrackElement);
 						console.log("OK")
 						resultElement.appendChild(cardElement);
 					}
