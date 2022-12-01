@@ -77,7 +77,7 @@ public class Spotify {
 	public String serch(String keyword) throws UnsupportedEncodingException {
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(apiEndpoint + String.format("/search?q=%s&type=%s&limit=2", keyword, URLEncoder.encode("track", "utf-8"))))
+            .uri(URI.create(apiEndpoint + String.format("/search?q=%s&type=%s&limit=5", keyword, URLEncoder.encode("track", "utf-8"))))
 			.setHeader("Authorization", "Bearer " + getAccessToken())
 			.setHeader("Content-Type", "application/json")
 			.GET()
@@ -104,13 +104,20 @@ public class Spotify {
 				System.out.println("Name :" + data.getJSONObject(i).get("name"));
 			}
 			builder = new StringBuilder();
-			builder.append('{');
+			builder.append("{\"data\":");
+			builder.append('[');
 			for(int i = 0; i < data.length(); i++){
-				builder.append("\"Album_Images\":\"").append(data.getJSONObject(i).getJSONObject("album").getJSONArray("images")).append("\"");
-				builder.append("\"Album_Id\":\"").append(data.getJSONObject(i).getJSONObject("album").get("id")).append("\"");
-				builder.append("\"Artist\":\"").append(data.getJSONObject(i).getJSONArray("artists")).append("\"");
+				builder.append('{');
+				builder.append("\"Album_Images\":\"").append(data.getJSONObject(i).getJSONObject("album").getJSONArray("images").getJSONObject(0).get("url")).append("\",");
+				builder.append("\"Album_Id\":\"").append(data.getJSONObject(i).getJSONObject("album").get("id")).append("\",");
+				builder.append("\"Artist\":\"").append(data.getJSONObject(i).getJSONArray("artists").getJSONObject(0).get("name")).append("\",");
 				builder.append("\"Name\":\"").append(data.getJSONObject(i).get("name")).append("\"");
+				builder.append("}");
+				if(i != data.length() - 1){
+					builder.append(",");
+				}
 			}
+			builder.append(']');
 			builder.append('}');
 
 		} catch (IOException | InterruptedException e) {

@@ -35,11 +35,24 @@
 		
 		function receiveFromSearch() {
 			if(xmlHttpRequest.readyState == 4 && xmlHttpRequest.status == 200) {
-				var response = xmlHttpRequest.responseText;
+				var response = JSON.parse(xmlHttpRequest.responseText);
 				if(document.querySelector(".result")){
 					let resultElement = document.querySelector(".result");
-					resultElement.innerHTML = response;
-					console.log("OK");
+					for( var i = 0; i < response.data.length; i++ ){
+						let cardElement = document.createElement("div");
+						cardElement.classList.add("card");
+						let imgElement = document.createElement("img");
+						imgElement.setAttribute("src", response.data[i].Album_Images);
+						let truckNameElement = document.createElement("p");
+						truckNameElement.innerHTML = response.data[i].Name;
+						let artistNameElement = document.createElement("p");
+						artistNameElement.innerHTML = response.data[i].Artist;
+						cardElement.appendChild(imgElement);
+						cardElement.appendChild(truckNameElement);
+						cardElement.appendChild(artistNameElement);
+						console.log("OK")
+						resultElement.appendChild(cardElement);
+					}
 				}
 			}
 		}
@@ -55,7 +68,6 @@
 				loginState = cArray[1]
 			}
 		}
-		console.log("ステータス：" + loginState)
 		const LoggedIn = () => {
 			return (
 				<div>
@@ -68,7 +80,9 @@
 					<form action="/isp2/api/logout" method="get">
 						<input type="submit" value="ログアウト" />
 					</form>
-					<div className="result"></div>
+					<div className="result">
+							
+					</div>
 				</div>
 			);
 		}
