@@ -19,7 +19,7 @@ public class SetTokenServlet extends HttpServlet {
         String code = (request.getParameter("token") == null) ? ""
         : (String) request.getParameter("token");
 
-		Spotify spotify = new Spotify();
+		Spotify spotify = Spotify.getInstance();
 		spotify.setCode(code);
 
 		StringBuilder builder = new StringBuilder();

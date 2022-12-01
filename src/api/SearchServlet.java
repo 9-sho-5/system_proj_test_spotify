@@ -19,7 +19,7 @@ public class SearchServlet extends HttpServlet  {
         
         String keyword = (request.getParameter("keyword") == null) ? "" : (String) request.getParameter("keyword");
         
-		Spotify spotify = new Spotify();
+		Spotify spotify = Spotify.getInstance();
         try {
             spotify.crateAccessToken();
         } catch (UnirestException e) {

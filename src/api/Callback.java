@@ -22,7 +22,7 @@ public class Callback extends HttpServlet {
         
         String code = (request.getParameter("code") == null) ? "" : (String) request.getParameter("code");
         if (code != null){
-            Spotify spotify = new Spotify();
+            Spotify spotify = Spotify.getInstance();
             spotify.setCode(code);
             cookie = new Cookie("loginStatus", "loggedIn");
         } else {

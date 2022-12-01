@@ -19,7 +19,7 @@ public class LoginServlet extends HttpServlet {
         
 		String auhorizeUri = null;
 
-		Spotify spotify = new Spotify();
+		Spotify spotify = Spotify.getInstance();
 		auhorizeUri = spotify.authorize();
 
 		// CROS設定
