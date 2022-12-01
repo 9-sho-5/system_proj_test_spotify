@@ -47,9 +47,13 @@
 						truckNameElement.innerHTML = response.data[i].Name;
 						let artistNameElement = document.createElement("p");
 						artistNameElement.innerHTML = response.data[i].Artist;
+						let trackIdElement = document.createElement("input");
+						trackIdElement.type = "hidden";
+						trackIdElement.value = response.data[i].uri;
 						cardElement.appendChild(imgElement);
 						cardElement.appendChild(truckNameElement);
 						cardElement.appendChild(artistNameElement);
+						cardElement.appendChild(trackIdElement);
 						console.log("OK")
 						resultElement.appendChild(cardElement);
 					}

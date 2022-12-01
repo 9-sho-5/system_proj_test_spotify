@@ -92,16 +92,17 @@ public class Spotify {
 			JSONObject json = new JSONObject(response.body());
 			// System.out.println(json.getJSONObject("tracks"));
 			JSONObject tracks = json.getJSONObject("tracks");
-			System.out.println("tracks: " + tracks);
-
-
+			
+			
 			JSONArray data = tracks.getJSONArray("items");
+			System.out.println(data.getJSONObject(0));
 			// レスポンス整形
 			for(int i = 0; i < data.length(); i++){
 				System.out.println("Album Images :" + data.getJSONObject(i).getJSONObject("album").getJSONArray("images"));
 				System.out.println("Album Id :" + data.getJSONObject(i).getJSONObject("album").get("id"));
 				System.out.println("Artist :" + data.getJSONObject(i).getJSONArray("artists"));
 				System.out.println("Name :" + data.getJSONObject(i).get("name"));
+				System.out.println("uri :" + data.getJSONObject(i).get("uri"));
 			}
 			builder = new StringBuilder();
 			builder.append("{\"data\":");
@@ -111,7 +112,8 @@ public class Spotify {
 				builder.append("\"Album_Images\":\"").append(data.getJSONObject(i).getJSONObject("album").getJSONArray("images").getJSONObject(0).get("url")).append("\",");
 				builder.append("\"Album_Id\":\"").append(data.getJSONObject(i).getJSONObject("album").get("id")).append("\",");
 				builder.append("\"Artist\":\"").append(data.getJSONObject(i).getJSONArray("artists").getJSONObject(0).get("name")).append("\",");
-				builder.append("\"Name\":\"").append(data.getJSONObject(i).get("name")).append("\"");
+				builder.append("\"Name\":\"").append(data.getJSONObject(i).get("name")).append("\",");
+				builder.append("\"uri\":\"").append(data.getJSONObject(i).get("uri")).append("\"");
 				builder.append("}");
 				if(i != data.length() - 1){
 					builder.append(",");
