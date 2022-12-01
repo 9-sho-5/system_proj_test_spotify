@@ -22,6 +22,27 @@
 			xmlHttpRequest.open("get", url, true);
 			xmlHttpRequest.send(null);
 		}
+		function search() {
+			let keyword = document.querySelector("#keyword").value;
+			console.log(keyword)
+			var url = `search?keyword=${ keyword }`
+			xmlHttpRequest = new XMLHttpRequest();
+			xmlHttpRequest.withCredentials = true;
+			xmlHttpRequest.onreadystatechange = receiveFromSearch;
+			xmlHttpRequest.open("get", url, true);
+			xmlHttpRequest.send(null);
+		}
+		
+		function receiveFromSearch() {
+			if(xmlHttpRequest.readyState == 4 && xmlHttpRequest.status == 200) {
+				var response = xmlHttpRequest.responseText;
+				if(document.querySelector(".result")){
+					let resultElement = document.querySelector(".result");
+					resultElement.innerHTML = response;
+					console.log("OK");
+				}
+			}
+		}
 
 		let dom = document.querySelector("#root")
 		var cookies = document.cookie; //全てのcookieを取り出して
@@ -39,14 +60,15 @@
 			return (
 				<div>
 					<p>ログインしました</p>
-					<form action="/isp2/api/search" method="get">
-						<input type="text" name="keyword" />
-						<input type="submit" value="検索" />
-					</form>
+
+					<input type="text" name="keyword" id="keyword"/>
+					<input id="search" onClick={ search } type="submit" value="検索" />
+
 
 					<form action="/isp2/api/logout" method="get">
 						<input type="submit" value="ログアウト" />
 					</form>
+					<div className="result"></div>
 				</div>
 			);
 		}

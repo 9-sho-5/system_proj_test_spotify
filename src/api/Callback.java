@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.mashape.unirest.http.exceptions.UnirestException;
+
 @WebServlet("/api/callback")
 public class Callback extends HttpServlet {
 
@@ -27,6 +29,13 @@ public class Callback extends HttpServlet {
             cookie = new Cookie("loginStatus", "loggedIn");
         } else {
             cookie = new Cookie("loginStatus", "notLoggedIn");
+        }
+
+        Spotify spotify = Spotify.getInstance();
+        try {
+            spotify.crateAccessToken();
+        } catch (UnirestException e) {
+            e.printStackTrace();
         }
         
         response.addCookie(cookie);

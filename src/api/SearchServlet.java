@@ -20,19 +20,17 @@ public class SearchServlet extends HttpServlet  {
         String keyword = (request.getParameter("keyword") == null) ? "" : (String) request.getParameter("keyword");
         
 		Spotify spotify = Spotify.getInstance();
-        try {
-            spotify.crateAccessToken();
-        } catch (UnirestException e) {
-        }
 
-        String data = spotify.serch(keyword);
+		if(spotify.getAccessToken() == null){
+			try {
+				spotify.crateAccessToken();
+			} catch (UnirestException e) {
+			}
+		}
 
-		StringBuilder builder = new StringBuilder();
-		builder.append('{');
-		builder.append("\"data\":\"").append(data).append("\"");
-		builder.append('}');
-		String json = builder.toString();
-		
+		String json = spotify.serch(keyword);
+		response.setContentType("application/json");
+		request.setCharacterEncoding("UTF-8");
 		System.out.println(json);
 		Writer writer = response.getWriter();
 		writer.append(json);

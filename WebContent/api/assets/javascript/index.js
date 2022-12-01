@@ -17,14 +17,14 @@ let res_uri;
 	// xmlHttpRequest.send(null);
 // }
 
-function serch() {
-	var url = "search"
-	xmlHttpRequest = new XMLHttpRequest();
-	xmlHttpRequest.withCredentials = true;
-	xmlHttpRequest.onreadystatechange = receiveFromSearch;
-	xmlHttpRequest.open("get", url, true);
-	xmlHttpRequest.send(null);
-}
+// function search() {
+// 	var url = "search"
+// 	xmlHttpRequest = new XMLHttpRequest();
+// 	xmlHttpRequest.withCredentials = true;
+// 	xmlHttpRequest.onreadystatechange = receiveFromSearch;
+// 	xmlHttpRequest.open("get", url, true);
+// 	xmlHttpRequest.send(null);
+// }
 
 function redirect_to_api_auth() {
 
@@ -48,17 +48,6 @@ function receiveFromLogin() {
 		var response = JSON.parse(xmlHttpRequest.responseText);
 		res_uri = response.uri;
 		redirect_to_api_auth();
-	}
-}
-
-function receiveFromSearch() {
-	if(xmlHttpRequest.readyState == 4 && xmlHttpRequest.status == 200) {
-		var response = JSON.parse(xmlHttpRequest.responseText);
-		if(document.querySelector(".result")){
-			let resultElement = document.querySelector(".result");
-			resultElement.innerHTML = response.data;
-			console.log("OK");
-		}
 	}
 }
 

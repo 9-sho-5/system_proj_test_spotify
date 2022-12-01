@@ -9,6 +9,7 @@ import java.security.SecureRandom;
 import java.util.Base64;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import com.mashape.unirest.http.exceptions.UnirestException;
 import java.io.IOException;
 import java.net.http.HttpResponse;
@@ -65,7 +66,7 @@ public class Spotify {
 			var response = client.send(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
 			// レスポンスボディからaccess_tokenの取得
 			JSONObject json = new JSONObject(response.body());
-			access_token = json.getString("access_token");
+			setAccessToken(json.getString("access_token"));
 
 			// System.out.println("access_token: " + json.getString("access_token"));
 		} catch (IOException | InterruptedException e) {
@@ -82,14 +83,19 @@ public class Spotify {
 			.GET()
             .build();
 
+		
 		StringBuilder builder = null;
 		try {
 			// リクエストを送信
 			var response = client.send(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
 			// レスポンスボディからaccess_tokenの取得
 			JSONObject json = new JSONObject(response.body());
+			// System.out.println(json.getJSONObject("tracks"));
+			JSONObject tracks = json.getJSONObject("tracks");
+			System.out.println("tracks: " + tracks);
 
-			JSONArray data = json.getJSONObject("tracks").getJSONArray("items");
+
+			JSONArray data = tracks.getJSONArray("items");
 			// レスポンス整形
 			for(int i = 0; i < data.length(); i++){
 				System.out.println("Album Images :" + data.getJSONObject(i).getJSONObject("album").getJSONArray("images"));
@@ -117,7 +123,7 @@ public class Spotify {
 		this.code = code;
 	}
 
-	public void setToken(String access_token) {
+	public void setAccessToken(String access_token) {
 		this.access_token = access_token;
 	}
 
