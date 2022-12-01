@@ -29,12 +29,12 @@
 		var loginState = null;
 		for(var c of cookiesArray){ //一つ一つ取り出して
 			var cArray = c.split('='); //さらに=で分割して配列に
-			console.log(cArray[0]);
+			console.log(cArray[0] + "：" + cArray[1]);
 			if( cArray[0] == 'loginStatus'){ // 取り出したいkeyと合致したら
 				loginState = cArray[1]
 			}
 		}
-		console.log(loginState)
+		console.log("ステータス：" + loginState)
 		const LoggedIn = () => {
 			return (
 				<div>
@@ -42,6 +42,10 @@
 					<form action="/isp2/api/search" method="get">
 						<input type="text" name="keyword" />
 						<input type="submit" value="検索" />
+					</form>
+
+					<form action="/isp2/api/logout" method="get">
+						<input type="submit" value="ログアウト" />
 					</form>
 				</div>
 			);
