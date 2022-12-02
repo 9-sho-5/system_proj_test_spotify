@@ -1,6 +1,8 @@
 package api;
 
 import java.io.IOException;
+import java.io.Writer;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,13 +22,16 @@ public class AddToPlaylist extends HttpServlet {
         JSONObject data = new JSONObject();
         JSONArray urisArray = new JSONArray();
         urisArray.put(trackId);
-        data.put("\"uris\"", "\"" + urisArray + "\"");
+        data.put("uris", urisArray);
         System.out.println(data);
 
         Spotify spotify = Spotify.getInstance();
-		spotify.addTrack(ENV.getPlaylistId(), data);
+        String json = spotify.addTrack(ENV.getPlaylistId(), data);
 
 		response.setContentType("application/json");
 		request.setCharacterEncoding("UTF-8");
+        Writer writer = response.getWriter();
+		writer.append(json);
+		writer.flush();
 	}
 }

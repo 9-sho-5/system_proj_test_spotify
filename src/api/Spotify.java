@@ -134,10 +134,10 @@ public class Spotify {
             .uri(URI.create(apiEndpoint + String.format("/playlists/%s/tracks", playlistId)))
 			.setHeader("Authorization", "Bearer " + getAccessToken())
 			.setHeader("Content-Type", "application/json")
-			.POST(BodyPublishers.ofString(URLEncoder.encode(uris.toString(), "UTF-8")))
+			.POST(BodyPublishers.ofString(uris.toString()))
             .build();
 			System.out.println(uris.toString());
-			System.out.println(uris);
+			System.out.println(URLEncoder.encode(uris.toString(), "UTF-8"));
 		
 		StringBuilder builder = null;
 		try {
@@ -159,7 +159,7 @@ public class Spotify {
 			// 	System.out.println("uri :" + data.getJSONObject(i).get("uri"));
 			// }
 			builder = new StringBuilder();
-			builder.append("{\"data\":");
+			builder.append('{');
 			// builder.append('[');
 			// for(int i = 0; i < data.length(); i++){
 			// 	builder.append('{');
@@ -167,7 +167,7 @@ public class Spotify {
 			// 	builder.append("\"Album_Id\":\"").append(data.getJSONObject(i).getJSONObject("album").get("id")).append("\",");
 			// 	builder.append("\"Artist\":\"").append(data.getJSONObject(i).getJSONArray("artists").getJSONObject(0).get("name")).append("\",");
 			// 	builder.append("\"Name\":\"").append(data.getJSONObject(i).get("name")).append("\",");
-				builder.append("\"snapshot\":\"").append(json).append("\"");
+				builder.append("\"snapshot\":").append(json).append("");
 			// 	builder.append("}");
 			// 	if(i != data.length() - 1){
 			// 		builder.append(",");

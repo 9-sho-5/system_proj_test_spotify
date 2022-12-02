@@ -37,9 +37,17 @@
 			var url = `add_track?trackId=${ trackId }`
 			xmlHttpRequest = new XMLHttpRequest();
 			xmlHttpRequest.withCredentials = true;
-			// xmlHttpRequest.onreadystatechange = receiveFromSearch;
+			xmlHttpRequest.onreadystatechange = recieveAddTruck;
 			xmlHttpRequest.open("get", url, true);
 			xmlHttpRequest.send(null);
+		}
+
+		function recieveAddTruck(){
+			if(xmlHttpRequest.readyState == 4 && xmlHttpRequest.status == 200) {
+				console.log(xmlHttpRequest.responseText);
+				var response = JSON.parse(xmlHttpRequest.responseText);
+				document.querySelector(".done").innerHTML = response.data;
+			}
 		}
 		
 		function receiveFromSearch() {
@@ -99,6 +107,9 @@
 						<input type="submit" value="ログアウト" />
 					</form>
 					<div className="result">
+							
+					</div>
+					<div className="done">
 							
 					</div>
 				</div>
