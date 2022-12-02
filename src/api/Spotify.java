@@ -143,37 +143,12 @@ public class Spotify {
 		try {
 			// リクエストを送信
 			var response = client.send(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
-			// レスポンスボディからaccess_tokenの取得
+			// レスポンスボディからレスポンスの取得
 			JSONObject json = new JSONObject(response.body());
-			// JSONObject tracks = json.getJSONObject("tracks");
-			
-			
-			// JSONArray data = tracks.getJSONArray("items");
-			// System.out.println(data.getJSONObject(0));
-			// // レスポンス整形
-			// for(int i = 0; i < data.length(); i++){
-			// 	System.out.println("Album Images :" + data.getJSONObject(i).getJSONObject("album").getJSONArray("images"));
-			// 	System.out.println("Album Id :" + data.getJSONObject(i).getJSONObject("album").get("id"));
-			// 	System.out.println("Artist :" + data.getJSONObject(i).getJSONArray("artists"));
-			// 	System.out.println("Name :" + data.getJSONObject(i).get("name"));
-			// 	System.out.println("uri :" + data.getJSONObject(i).get("uri"));
-			// }
+
 			builder = new StringBuilder();
 			builder.append('{');
-			// builder.append('[');
-			// for(int i = 0; i < data.length(); i++){
-			// 	builder.append('{');
-			// 	builder.append("\"Album_Images\":\"").append(data.getJSONObject(i).getJSONObject("album").getJSONArray("images").getJSONObject(0).get("url")).append("\",");
-			// 	builder.append("\"Album_Id\":\"").append(data.getJSONObject(i).getJSONObject("album").get("id")).append("\",");
-			// 	builder.append("\"Artist\":\"").append(data.getJSONObject(i).getJSONArray("artists").getJSONObject(0).get("name")).append("\",");
-			// 	builder.append("\"Name\":\"").append(data.getJSONObject(i).get("name")).append("\",");
-				builder.append("\"snapshot\":").append(json).append("");
-			// 	builder.append("}");
-			// 	if(i != data.length() - 1){
-			// 		builder.append(",");
-			// 	}
-			// }
-			// builder.append(']');
+			builder.append("\"snapshot\":").append(json).append("");
 			builder.append('}');
 
 		} catch (IOException | InterruptedException e) {
