@@ -28,6 +28,8 @@ public class SearchServlet extends HttpServlet  {
 			}
 		}
 
+		CreateTable.createTable();
+
 		String json = spotify.serch(keyword);
 		response.setContentType("application/json");
 		request.setCharacterEncoding("UTF-8");
