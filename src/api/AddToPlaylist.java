@@ -26,7 +26,7 @@ public class AddToPlaylist extends HttpServlet {
         System.out.println(data);
 
         Spotify spotify = Spotify.getInstance();
-        String json = spotify.addTrack(ENV.getPlaylistId(), data);
+        String json = spotify.addTrack(data);
 
 		response.setContentType("application/json");
 		request.setCharacterEncoding("UTF-8");
