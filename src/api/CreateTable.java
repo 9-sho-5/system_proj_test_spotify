@@ -35,23 +35,45 @@ public class CreateTable {
                 System.out.println("the Database is already used");
             }
 
-            sql = "CREATE TABLE Singers (\n"
+            sql = "CREATE TABLE Ranking (\n"
                     + "id INT(11) AUTO_INCREMENT NOT NULL, "
-                    + "name VARCHAR(30) NOT NULL ,"
-                    + "age INT(3) NOT NULL,"
+                    + "track_name VARCHAR(80) NOT NULL ,"
+                    + "artist_name VARCHAR(80) NOT NULL ,"
+                    + "album_name VARCHAR(80) NOT NULL ,"
+                    + "album_image_url VARCHAR(360) NOT NULL ,"
                     + "PRIMARY KEY (id))";
+                    stmt.executeUpdate(sql);
+            // try {
+            //     System.out.println("Table created successfully...");
+            // } catch (SQLException e) {
+            //     System.out.println("the table is exists");
+            // }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void dropDatabase() {
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                Statement stmt = conn.createStatement();) {
+
+            System.out.println("connected Database successfully...");
+
+            String sql = "drop DATABASE sys_proj_B01;";
             try {
                 stmt.executeUpdate(sql);
-                System.out.println("Table created successfully...");
+                System.out.println("created Database successfully...");
             } catch (SQLException e) {
-                System.out.println("the table is exists");
+                System.out.println("database exists");
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public static boolean checkDatabase() {
+        boolean flg = false;
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
                 Statement stmt = conn.createStatement();) {
 
@@ -78,12 +100,39 @@ public class CreateTable {
                     String name = rs.getString("database()");
                     System.out.println(name + " is selected");
                 }
+                flg = true;
             } catch (SQLException e) {
                 System.out.println("エラー");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return flg;
+    }
+
+    public static void insertData(String track_name, String artist_name, String album_name, String album_image_url) {
+
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                Statement stmt = conn.createStatement();) {
+
+            String sql = "USE sys_proj_B01; ";
+            try {
+                stmt.executeUpdate(sql);
+                System.out.println("use Database successfully...");
+            } catch (SQLException e) {
+                System.out.println("the Database is already used");
+            }
+
+            sql = String.format("insert into Ranking (track_name, artist_name, album_name, album_image_url) values (%s, %s, %s, %s);", track_name, artist_name, album_name, album_image_url);
+            try {
+                stmt.executeQuery(sql);
+                System.out.println("inserted data completely!!");
+            } catch (SQLException e) {
+                System.out.println("エラー");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }
