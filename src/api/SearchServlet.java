@@ -29,6 +29,7 @@ public class SearchServlet extends HttpServlet  {
 		}
 
 		CreateTable.createTable();
+		CreateTable.checkDatabase();
 
 		String json = spotify.serch(keyword);
 		response.setContentType("application/json");
