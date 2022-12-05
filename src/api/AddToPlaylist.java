@@ -15,9 +15,13 @@ import org.json.JSONObject;
 @WebServlet("/api/add_track")
 public class AddToPlaylist extends HttpServlet {
     
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
         String trackId = (request.getParameter("trackId") == null) ? "" : (String) request.getParameter("trackId");
+        String track_name = (request.getParameter("track_name") == null) ? "" : (String) request.getParameter("track_name");
+        String artist_name = (request.getParameter("artist_name") == null) ? "" : (String) request.getParameter("artist_name");
+        String album_name = (request.getParameter("album_name") == null) ? "" : (String) request.getParameter("album_name");
+        String album_image_url = (request.getParameter("album_image_url") == null) ? "" : (String) request.getParameter("album_image_url");
         
         JSONObject data = new JSONObject();
         JSONArray urisArray = new JSONArray();
@@ -27,6 +31,10 @@ public class AddToPlaylist extends HttpServlet {
 
         Spotify spotify = Spotify.getInstance();
         String json = spotify.addTrack(data);
+
+        CreateTable.dropDatabase();
+		CreateTable.createTable();
+		CreateTable.insertData("track_name", "artist_name", "album_name", "album_image_url");
 
 		response.setContentType("application/json");
 		request.setCharacterEncoding("UTF-8");

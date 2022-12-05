@@ -37,10 +37,10 @@ public class CreateTable {
 
             sql = "CREATE TABLE Ranking (\n"
                     + "id INT(11) AUTO_INCREMENT NOT NULL, "
-                    + "track_name VARCHAR(80) NOT NULL ,"
-                    + "artist_name VARCHAR(80) NOT NULL ,"
-                    + "album_name VARCHAR(80) NOT NULL ,"
-                    + "album_image_url VARCHAR(360) NOT NULL ,"
+                    + "track_name VARCHAR(255) NOT NULL ,"
+                    + "artist_name VARCHAR(255) NOT NULL ,"
+                    + "album_name VARCHAR(255) NOT NULL ,"
+                    + "album_image_url VARCHAR(255) NOT NULL ,"
                     + "PRIMARY KEY (id))";
                     stmt.executeUpdate(sql);
             // try {
@@ -48,6 +48,7 @@ public class CreateTable {
             // } catch (SQLException e) {
             //     System.out.println("the table is exists");
             // }
+            stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -66,7 +67,7 @@ public class CreateTable {
             } catch (SQLException e) {
                 System.out.println("database exists");
             }
-
+            stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -104,6 +105,7 @@ public class CreateTable {
             } catch (SQLException e) {
                 System.out.println("エラー");
             }
+            stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -111,6 +113,8 @@ public class CreateTable {
     }
 
     public static void insertData(String track_name, String artist_name, String album_name, String album_image_url) {
+
+        System.out.println("=== insert Data ===");
 
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
                 Statement stmt = conn.createStatement();) {
@@ -123,13 +127,14 @@ public class CreateTable {
                 System.out.println("the Database is already used");
             }
 
-            sql = String.format("insert into Ranking (track_name, artist_name, album_name, album_image_url) values (%s, %s, %s, %s);", track_name, artist_name, album_name, album_image_url);
+            sql = String.format("insert into Ranking values (0, '%s', '%s', '%s', '%s');", track_name, artist_name, album_name, album_image_url);
             try {
-                stmt.executeQuery(sql);
+                stmt.executeUpdate(sql);
                 System.out.println("inserted data completely!!");
             } catch (SQLException e) {
-                System.out.println("エラー");
+                System.out.println(e.getMessage());
             }
+            stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -38,8 +38,8 @@
 			xmlHttpRequest = new XMLHttpRequest();
 			xmlHttpRequest.withCredentials = true;
 			xmlHttpRequest.onreadystatechange = recieveAddTruck;
-			xmlHttpRequest.open("get", url, true);
-			xmlHttpRequest.send(null);
+			xmlHttpRequest.open("post", url, true);
+			xmlHttpRequest.send();
 		}
 
 		function recieveAddTruck(){
@@ -66,16 +66,38 @@
 						artistNameElement.innerHTML = response.data[i].Artist;
 						let trackIdElement = document.createElement("input");
 						trackIdElement.type = "hidden";
+						trackIdElement.value = response.data[i].uri;
+
+						let hiddenTrackNameElement = document.createElement("input");
+						hiddenTrackNameElement.type = "hidden";
+						hiddenTrackNameElement.name = "track_name";
+						hiddenTrackNameElement.value = response.data[i].Name;
+						let hiddenArtistNameElement = document.createElement("input");
+						hiddenArtistNameElement.type = "hidden";
+						hiddenArtistNameElement.name = "artist_name";
+						hiddenArtistNameElement.value = response.data[i].Artist;
+						let hiddenAlbumNameElement = document.createElement("input");
+						hiddenAlbumNameElement.type = "hidden";
+						hiddenAlbumNameElement.name = "album_name";
+						hiddenAlbumNameElement.value = response.data[i].Name;
+						let hiddenAlbuImageUrlElement = document.createElement("input");
+						hiddenAlbuImageUrlElement.type = "hidden";
+						hiddenAlbuImageUrlElement.name = "album_image_url";
+						hiddenAlbuImageUrlElement.value = response.data[i].Album_Images;
 						let addTrackElement = document.createElement("input");
 						addTrackElement.type = "submit";
 						addTrackElement.value = "add"
 						addTrackElement.setAttribute('onclick', 'addTrack(this)');
-						trackIdElement.value = response.data[i].uri;
+
 						cardElement.appendChild(imgElement);
 						cardElement.appendChild(truckNameElement);
 						cardElement.appendChild(artistNameElement);
 						cardElement.appendChild(trackIdElement);
 						cardElement.appendChild(addTrackElement);
+						cardElement.appendChild(hiddenTrackNameElement);
+						cardElement.appendChild(hiddenArtistNameElement);
+						cardElement.appendChild(hiddenAlbumNameElement);
+						cardElement.appendChild(hiddenAlbuImageUrlElement);
 						console.log("OK")
 						resultElement.appendChild(cardElement);
 					}
