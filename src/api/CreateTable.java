@@ -66,7 +66,7 @@ public class CreateTable extends HttpServlet {
             //         + "album_name VARCHAR(255) NOT NULL ,"
             //         + "album_image_url VARCHAR(255) NOT NULL ,"
             //         + "PRIMARY KEY (id))";
-            sql = "CREATE TABLE Ranking (\n"
+            sql = "CREATE TABLE IF NOT EXISTS Ranking (\n"
                     + "id integer primary key autoincrement, "
                     + "track_name text ,"
                     + "artist_name text ,"
