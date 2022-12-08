@@ -3,6 +3,7 @@ package api;
 import java.io.IOException;
 import java.io.Writer;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -32,7 +33,6 @@ public class AddToPlaylist extends HttpServlet {
         Spotify spotify = Spotify.getInstance();
         String json = spotify.addTrack(data);
 
-        CreateTable.dropDatabase();
 		CreateTable.createTable();
 		CreateTable.insertData("track_name", "artist_name", "album_name", "album_image_url");
 
